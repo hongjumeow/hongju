@@ -1,14 +1,7 @@
-import React, { useRef, useEffect, useState, MutableRefObject } from 'react';
-import World from './world.ts';
+import { useRef, useEffect, useState, MutableRefObject } from 'react';
+import World from './world';
 
-export default ({
-	antialias,
-	engineOptions,
-	adaptToDeviceRatio,
-	sceneOptions,
-	onRender,
-	...rest
-}) => {
+export default () => {
   const reactCanvas = useRef(null);
 
   useEffect(() => {
@@ -29,7 +22,7 @@ export default ({
         window.removeEventListener("resize", world.resize);
       }
     };
-  }, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender]);
+  }, []);
 
-  return <canvas ref={reactCanvas} {...rest} />;
+  return <canvas ref={reactCanvas} />;
 };
