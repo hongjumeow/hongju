@@ -7,21 +7,21 @@ import { defined } from './utils/type';
 import World from './world';
 
 const Wrapper = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 `;
 
 const Canvas = React.memo(styled.canvas`
-position: relative;
-width: 100%;
-height: 100%;
-overflow: hidden;
-margin: 0;
-padding: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 `);
 
 export default () => {

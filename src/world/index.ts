@@ -14,7 +14,8 @@ import {
 	Vector3,
 } from "@babylonjs/core";
 
-import { defined } from "./utils/type";
+import { defined } from "../utils/type";
+import Marble from "./marble";
 
 export default class World {
 	private readonly _events = new EventEmitter();
@@ -43,33 +44,8 @@ export default class World {
 
 		const light = new HemisphericLight("light", new Vector3(0, 1, 0), this.scene);
 		light.intensity = 0.7;
-
-		this._marble = MeshBuilder.CreateSphere("marble", { diameter: 5 }, this.scene);
-		let material = new StandardMaterial("marble_mat", this.scene);
-		material.alpha = 1;
-		material.diffuseColor = new Color3(1, 0.2, 0);
-		this._marble.material = material;
-		this._assignAction();
-	}
-
-	private _assignAction = () => {
-		this._marble.actionManager = new ActionManager(this.scene);
-		const action = new ExecuteCodeAction(
-			ActionManager.OnPickUpTrigger, (e) => {
-				const mesh = e.meshUnderPointer;
-				alert(mesh?.name);
-			}
-		)
-		this._ensureActionManager(this._marble).registerAction(action);
-	}
-
-	protected _ensureActionManager(mesh: Mesh): AbstractActionManager {
-		const actionManager = mesh.actionManager ?? new ActionManager(this.scene);
-		if (!defined(mesh.actionManager)) {
-			mesh.actionManager = actionManager;
-		}
-
-		return actionManager;
+	
+		const marble = new Marble(this.scene);
 	}
 
 	public start = (): void => {
@@ -82,7 +58,7 @@ export default class World {
 
 		this._engine.runRenderLoop(() => {
 			if (this.scene.activeCamera) {
-					this.scene.render();
+				this.scene.render();
 			}
 		});
 	}
