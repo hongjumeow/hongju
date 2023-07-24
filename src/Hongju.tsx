@@ -1,8 +1,10 @@
-import { useRef, useEffect, useCallback } from 'react';
 import * as React from 'react';
-import World from './world';
+import { useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+
 import { defined } from './utils/type';
+
+import World from './world';
 
 const Wrapper = styled.div`
     position: absolute;

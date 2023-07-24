@@ -1,4 +1,5 @@
-import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+
 import Hongju from './Hongju';
 
 function App() {

@@ -13,6 +13,7 @@ import {
 	StandardMaterial,
 	Vector3,
 } from "@babylonjs/core";
+
 import { defined } from "./utils/type";
 
 export default class World {
