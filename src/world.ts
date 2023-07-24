@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { 
+	AbstractActionManager,
 	ActionManager,
 	ArcRotateCamera,
 	Color3,
@@ -12,6 +13,7 @@ import {
 	StandardMaterial,
 	Vector3,
 } from "@babylonjs/core";
+import { defined } from "./utils/type";
 
 export default class World {
 	private readonly _events = new EventEmitter();
@@ -46,33 +48,40 @@ export default class World {
 		material.alpha = 1;
 		material.diffuseColor = new Color3(1, 0.2, 0);
 		this._marble.material = material;
-
-		// this._assignAction();
+		this._assignAction();
 	}
 
 	private _assignAction = () => {
-		this._marble.isPickable = true;
 		this._marble.actionManager = new ActionManager(this.scene);
-		this._marble.actionManager.registerAction(
-			new ExecuteCodeAction(
-				ActionManager.OnPickTrigger, (e) => {
-					const mesh = e.meshUnderPointer;
-					console.log(mesh);
-				}
-			)
+		const action = new ExecuteCodeAction(
+			ActionManager.OnPickUpTrigger, (e) => {
+				const mesh = e.meshUnderPointer;
+				alert(mesh?.name);
+			}
 		)
+		this._ensureActionManager(this._marble).registerAction(action);
+	}
+
+	protected _ensureActionManager(mesh: Mesh): AbstractActionManager {
+		const actionManager = mesh.actionManager ?? new ActionManager(this.scene);
+		if (!defined(mesh.actionManager)) {
+			mesh.actionManager = actionManager;
+		}
+
+		return actionManager;
 	}
 
 	public start = (): void => {
 		if (this.scene.isReady()) {
 			this._onSceneReady();
-		} else {
+		} 
+		else {
 			this.scene.onReadyObservable.addOnce(() => this._onSceneReady());
 		}
 
 		this._engine.runRenderLoop(() => {
 			if (this.scene.activeCamera) {
-					this.scene.render()
+					this.scene.render();
 			}
 		});
 	}
