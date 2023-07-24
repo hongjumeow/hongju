@@ -1,3 +1,7 @@
 # 홍 주
 
-I'm trying something (hopefully) awesome
+I'm trying something (hopefully) awesome !
+
+  ∧,,,∧
+( ̳• · • ̳)
+ /   づ 💝
