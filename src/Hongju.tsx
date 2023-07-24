@@ -23,7 +23,6 @@ padding: 0;
 `);
 
 export default () => {
-  const reactCanvas = useRef(null);
   const worldRef = useRef<World | null>(null);
 
   const initWorld = useCallback((canvas: HTMLCanvasElement | null) => {
@@ -36,25 +35,15 @@ export default () => {
     worldRef.current = world;
   }, []);
 
+  // handle window resize
   useEffect(() => {
-    const { current: canvas } = reactCanvas;
-    if (!canvas) return;
     if (!defined(worldRef.current)) return;
-
 		const world = worldRef.current;
 
     if (window) {
       window.addEventListener("resize", world.resize);
     }
-
-    return () => {
-      world.scene.getEngine().dispose();
-
-      if (window) {
-        window.removeEventListener("resize", world.resize);
-      }
-    };
-  }, [worldRef.current]);
+  }, [window]);
 
   return (
     <Wrapper>
