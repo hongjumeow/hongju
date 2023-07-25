@@ -11,34 +11,36 @@ import {
 
 import { defined } from "../utils/type";
 
+type MeshFeatures = {
+	name: string,
+	diameter: number,
+	color: Color3,
+	action: ExecuteCodeAction,
+}
+
 export default class Marble {
   private _scene: Scene;
-	private _bigMarble: Mesh;
+	private _mesh: Mesh;
 
-	constructor(scene: Scene) {
+	constructor(scene: Scene, meshFeatures: MeshFeatures) {
 		this._scene = scene;
-		this._init();
+		this._initMesh(meshFeatures);
 	}
 
-	public _init() {
-		this._bigMarble = MeshBuilder.CreateSphere("bigMarble", { diameter: 5 }, this._scene);
+	private _initMesh(meshFeatures: MeshFeatures) {
+		const { name, diameter, color, action } = meshFeatures;
+		this._mesh = MeshBuilder.CreateSphere(name, { diameter: diameter }, this._scene);
 
-		let material = new StandardMaterial("marbleMat", this._scene);
+		let material = new StandardMaterial(name + "_mat", this._scene);
 		material.alpha = 1;
-		material.diffuseColor = new Color3(1, 0.2, 0);
-		this._bigMarble.material = material;
+		material.diffuseColor = color;
+		this._mesh.material = material;
 
-		this._bigMarble.actionManager = new ActionManager(this._scene);
-		const action = new ExecuteCodeAction(
-			ActionManager.OnPickUpTrigger, (e) => {
-				const mesh = e.meshUnderPointer;
-				alert(mesh?.name);
-			}
-		)
-		this._bigMarble.actionManager.registerAction(action);
+		this._mesh.actionManager = new ActionManager(this._scene);
+		this._mesh.actionManager.registerAction(action);
 	}
 
-	protected _ensureActionManager(mesh: Mesh): AbstractActionManager {
+	private _ensureActionManager(mesh: Mesh): AbstractActionManager {
 		const actionManager = mesh.actionManager ?? new ActionManager(this._scene);
 		if (!defined(mesh.actionManager)) {
 			mesh.actionManager = actionManager;

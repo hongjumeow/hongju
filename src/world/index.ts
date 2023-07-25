@@ -27,7 +27,7 @@ export default class World {
 	private _engine: Engine;
 	private _camera: ArcRotateCamera;
 
-	private _marble: Mesh;
+	private _bigMarble: Marble;
 
 	public scene: Scene;
 
@@ -45,7 +45,18 @@ export default class World {
 		const light = new HemisphericLight("light", new Vector3(0, 1, 0), this.scene);
 		light.intensity = 0.7;
 	
-		const marble = new Marble(this.scene);
+		this._bigMarble = new Marble(
+			this.scene, {
+				name: "big_marble",
+				diameter: 10,
+				color: new Color3(1, 0.2, 0),
+				action: new ExecuteCodeAction(
+					ActionManager.OnPickUpTrigger, (e) => {
+						const mesh = e.meshUnderPointer;
+						alert(mesh?.name);
+					}
+				)
+			});
 	}
 
 	public start = (): void => {
