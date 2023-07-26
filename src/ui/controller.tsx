@@ -26,10 +26,11 @@ interface Props {
 }
 
 const Controller = (props: Props) => {
-  const {onClickFuncs} = props; 
+  const {onClickFuncs} = props;
+
   return (
     <Wrapper>
-      <ControllerButton onClick={onClickFuncs[0]} />
+      {onClickFuncs.map((func, idx) => <ControllerButton key={idx} onClick={func}/>)}
     </Wrapper>
   );
 }
