@@ -29,7 +29,7 @@ export default class Marble {
 		this._initMesh(meshFeatures);
 	}
 
-	private _initMesh(meshFeatures: MeshFeatures) {
+	private _initMesh = (meshFeatures: MeshFeatures): void => {
 		const { name, diameter, textureImg, action } = meshFeatures;
 		this._mesh = MeshBuilder.CreateSphere(name, { diameter: diameter }, this._scene);
 
@@ -38,7 +38,7 @@ export default class Marble {
 		this._setRandomPosition();
 	}
 
-	private _setMaterial(textureImg?: string) {
+	private _setMaterial = (textureImg?: string): void => {
 		let material = new StandardMaterial("mat");
 		if (defined(textureImg)) {
 			material.diffuseTexture = new Texture(textureImg);
@@ -48,7 +48,7 @@ export default class Marble {
 		this._mesh.material = material;
 	}
 
-	private _setActionManager(action: (e: ActionEvent) => void) {
+	private _setActionManager = (action: (e: ActionEvent) => void): void => {
 		const actionManager = this._mesh.actionManager ?? new ActionManager(this._scene);
 		if (!defined(this._mesh.actionManager)) {
 			this._mesh.actionManager = actionManager;
@@ -56,17 +56,17 @@ export default class Marble {
 		this._mesh.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickTrigger, action));
 	}
 
-	private _setRandomPosition() {
+	private _setRandomPosition = (): void => {
 		this._mesh.position.x = Scalar.RandomRange(-10, 10);
 		this._mesh.position.y = Scalar.RandomRange(-10, 10);
 		this._mesh.position.z = Scalar.RandomRange(-10, 10);
 	}
 
-	public getMesh() {
+	public getMesh = (): Mesh =>{
 		return this._mesh;
 	}
 	
-	public disposeMesh() {
-		return this._mesh.dispose();
+	public disposeMesh = (): void => {
+		this._mesh.dispose();
 	}
 }
