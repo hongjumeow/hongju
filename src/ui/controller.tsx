@@ -1,28 +1,20 @@
 import styled from 'styled-components';
 
+import ControllerButton from './controllerButton';
+
 const Wrapper = styled.div`
   position: absolute;
   overflow: hidden;
   left: 0;
   top: 0;
-  width: 20vw;
-  height: 5vh;
+  width: 200px;
+  height: 40px;
   margin: 0;
-  padding: 2vw 1vh;
-`;
-
-const ControllerButton = styled.button`
-  position: relative;
-  --radius: 5vw;
-  width: var(--radius);
-  height: var(--radius);
-  background-color: #000;
-  border-radius: 2.5vw;
-  cursor: pointer;
+  padding: 20px;
 `;
 
 interface Props {
-  onClickFuncs: Array<() => void>;
+  onClickFuncs: Array<() => void>,
 }
 
 const Controller = (props: Props) => {
@@ -30,7 +22,9 @@ const Controller = (props: Props) => {
 
   return (
     <Wrapper>
-      {onClickFuncs.map((func, idx) => <ControllerButton key={idx} onClick={func}/>)}
+      { onClickFuncs.map((func, idx) => 
+        <ControllerButton key={idx} $onClick={func} />)
+      }
     </Wrapper>
   );
 }
