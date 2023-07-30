@@ -5,6 +5,12 @@ import {
 	HemisphericLight,
 	Scene,
 	Vector3,
+	MeshBuilder,
+	Color3,
+	StandardMaterial,
+	CubeTexture,
+	Texture,
+	PhotoDome,
 } from "@babylonjs/core";
 
 import Marble from "./marble";
@@ -35,7 +41,27 @@ export default class World {
 		this._camera.setTarget(Vector3.Zero());
 		this._camera.attachControl(this._canvas, true);
 
-		const light = new HemisphericLight("light", new Vector3(0, 10, 0), this.scene);
+    const skyDome = new PhotoDome(
+			"skyDome",
+			"./duskfair2.jpg",
+			{
+					resolution: 32,
+					size: 1000,
+					useDirectMapping: false,
+					halfDomeMode: true,
+			},
+			this.scene
+		);
+		skyDome.rotation.x = - Math.PI / 2;
+		skyDome.position.y = -15;
+
+		const ground = MeshBuilder.CreateGround("ground", {width: 1000, height: 1000}, this.scene);
+		ground.position.y = -15;
+		const groundMaterial = new StandardMaterial("grass_mat", this.scene);
+		groundMaterial.diffuseColor = new Color3(.5, .5, .5);
+		ground.material = groundMaterial;
+
+		const light = new HemisphericLight("light", new Vector3(0, 100, 0), this.scene);
 		light.intensity = 0.7;
 
 		for (let i=0; i<20; i++) {
