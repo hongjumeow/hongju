@@ -11,6 +11,7 @@ import {
 	CubeTexture,
 	Texture,
 	PhotoDome,
+	DirectionalLight,
 } from "@babylonjs/core";
 
 import Marble from "./marble";
@@ -41,27 +42,19 @@ export default class World {
 		this._camera.setTarget(Vector3.Zero());
 		this._camera.attachControl(this._canvas, true);
 
-    const skyDome = new PhotoDome(
-			"skyDome",
-			"./duskfair2.jpg",
-			{
-					resolution: 32,
-					size: 1000,
-					useDirectMapping: false,
-					halfDomeMode: true,
-			},
-			this.scene
-		);
-		skyDome.rotation.x = - Math.PI / 2;
-		skyDome.position.y = -15;
+		var skybox = MeshBuilder.CreateBox("skyBox", {size:100.0}, this.scene);
+		var skyboxMaterial = new StandardMaterial("skyBox", this.scene);
+		skyboxMaterial.backFaceCulling = false;
+		skyboxMaterial.reflectionTexture = new CubeTexture("./skybox/skybox", this.scene);
+		skyboxMaterial.reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE;
+		skyboxMaterial.diffuseColor = new Color3(0, 0, 0);
+		skyboxMaterial.specularColor = new Color3(0, 0, 0);
+		skybox.material = skyboxMaterial;
 
-		const ground = MeshBuilder.CreateGround("ground", {width: 1000, height: 1000}, this.scene);
-		ground.position.y = -15;
-		const groundMaterial = new StandardMaterial("grass_mat", this.scene);
-		groundMaterial.diffuseColor = new Color3(.5, .5, .5);
-		ground.material = groundMaterial;
+		const ground = MeshBuilder.CreateGround("ground", {width: 100, height: 100}, this.scene);
+		ground.position.y = -100;
 
-		const light = new HemisphericLight("light", new Vector3(0, 100, 0), this.scene);
+		const light = new HemisphericLight("light", new Vector3(10, 100, 0), this.scene);
 		light.intensity = 0.7;
 
 		for (let i=0; i<20; i++) {
